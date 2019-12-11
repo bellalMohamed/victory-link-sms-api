@@ -1,0 +1,22 @@
+{
+    "name": "bellal/victory-link-sms",
+    "description": "Send SMSs using VictoryLink bulk sms API",
+    "keywords": ["Victory Link", "VictoryLink", "Victory", "Link",  "Web SMP", "composer", "package"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bellal Mohamed",
+            "email": "mbellal2000@gmail.com"
+        }
+    ],
+    "type": "package",
+    "require": {
+		"php": ">=5.4",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+	"autoload": {
+        "psr-4": {
+            "Bellal\\VictoryLinkSMS\\": "src/"
+        }
+    }
+}
