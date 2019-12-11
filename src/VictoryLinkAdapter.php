@@ -8,10 +8,10 @@ use GuzzleHttp\Client;
 
 class VictoryLinkAdapter implements MessageInterface
 {
-	/**
-	 * Vodafone API Credentails
-	 * @var array
-	 */
+    /**
+     * Vodafone API Credentails
+     * @var array
+     */
     protected $credentials;
     /**
      * Soap Client

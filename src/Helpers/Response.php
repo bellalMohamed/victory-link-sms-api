@@ -7,7 +7,16 @@ class Response
 {
     use ResponseHelper;
 
+    /**
+     * Resposne Status Code
+     * @var integer
+     */
     public $code;
+
+    /**
+     * Response Message
+     * @var string
+     */
     public $message;
 
     public function __construct($response)
