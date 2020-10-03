@@ -15,9 +15,9 @@ composer require bellal/victory-link-sms
 ```php
 <?php
 
-use Bellal\VictoryLinkSMS\VictoryLinkAdapter;
+use Bellal\VictoryLinkSMS\VictoryLink;
 
-$message = new VictoryLinkAdapter([
+$message = new VictoryLink([
     'username' => 'YOUR_USERNAME',
     'password' => 'YOUR_PASSWORD',
     'sender' => 'YOUR_SENDER',
