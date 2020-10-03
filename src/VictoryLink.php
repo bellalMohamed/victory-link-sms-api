@@ -3,10 +3,10 @@
 namespace Bellal\VictoryLinkSMS;
 
 use Bellal\VictoryLinkSMS\Helpers\Response;
-use Bellal\VictoryLinkSMS\Message\MessageInterface;
+use Bellal\VictoryLinkSMS\Interfaces\Message;
 use GuzzleHttp\Client;
 
-class VictoryLinkAdapter implements MessageInterface
+class VictoryLink implements Message
 {
     /**
      * Vodafone API Credentails
@@ -47,7 +47,7 @@ class VictoryLinkAdapter implements MessageInterface
      * @param  array  $data message details
      * @return VictoryLinkAdapter
      */
-    public function send(array $data): VictoryLinkAdapter
+    public function send(array $data): VictoryLink
     {
         $this->buildRequestParams($data);
 

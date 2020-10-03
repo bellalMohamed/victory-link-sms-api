@@ -1,12 +1,9 @@
 <?php
 
 namespace Bellal\VictoryLinkSMS\Helpers;
-use Bellal\VictoryLinkSMS\Helpers\ResponseHelper;
 
 class Response
 {
-    use ResponseHelper;
-
     /**
      * Resposne Status Code
      * @var integer
@@ -21,9 +18,29 @@ class Response
 
     public function __construct($response)
     {
-        $this->setCode($response);
+        $this->setCode(
+            $this->parseResponseToArray($response)
+        );
 
         $this->setMessage();
+    }
+
+    /**
+     * Returns Response Message
+     * @return string Message response
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * Returns Response Code
+     * @return string Message response
+     */
+    public function getCode(): int
+    {
+        return $this->code;
     }
 
     /**
@@ -32,7 +49,7 @@ class Response
      */
     protected function setCode($response): void
     {
-        $this->code = (int) $response->getBody()->getContents();
+        $this->code = $response[0];
     }
 
     /**
@@ -44,11 +61,34 @@ class Response
     }
 
     /**
-     * Returns Response Message
-     * @return string Message response
+     * Get Response Message from code
+     * @return string response message
      */
-    public function getMessage(): string
+    protected function responseMessage($code): string
     {
-        return $this->message;
+        $messages = [
+            '0' => 'Message Sent Succesfully',
+            '-1' => 'User is not subscribed',
+            '-5' => 'Out of credit.',
+            '-10' => 'Queued Message, no need to send it again.',
+            '-11' => 'Invalid language.',
+            '-12' => 'SMS is empty.',
+            '-13' => 'Invalid fake sender exceeded 12 chars or empty.',
+            '-25' => 'Sending rate greater than receiving rate (only for send/receive accounts).',
+            '-100' => 'Other error',
+        ];
+
+        if (isset($messages[$code])) {
+            return $messages[$code];
+        }
+
+        return 'Unknown error code.';
+    }
+
+    protected function parseResponseToArray($response): array
+    {
+        $xmlResponse = new \SimpleXMLElement($response->getBody()->getContents());
+
+        return (array) $xmlResponse;
     }
 }
