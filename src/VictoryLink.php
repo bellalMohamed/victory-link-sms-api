@@ -5,6 +5,7 @@ namespace Bellal\VictoryLinkSMS;
 use Bellal\VictoryLinkSMS\Helpers\Response;
 use Bellal\VictoryLinkSMS\Interfaces\Message;
 use GuzzleHttp\Client;
+use Ramsey\Uuid\Uuid;
 
 class VictoryLink implements Message
 {
@@ -13,17 +14,12 @@ class VictoryLink implements Message
      * @var array
      */
     protected $credentials;
-    /**
-     * Soap Client
-     * @var obj
-     */
-    protected $client;
 
     /**
      * API Endpont
      * @var string
      */
-    protected $api = "https://smsvas.vlserv.com/KannelSending/service.asmx/SendSMS";
+    protected $api = "https://smsvas.vlserv.com/VLSMSPlatformResellerAPI/NewSendingAPI/api/SMSSender/SendSMS";
 
     /**
      * Request Params
@@ -45,15 +41,16 @@ class VictoryLink implements Message
     /**
      * Send SMS
      * @param  array  $data message details
-     * @return VictoryLinkAdapter
+     * @return VictoryLink
      */
     public function send(array $data): VictoryLink
     {
         $this->buildRequestParams($data);
 
         $client = new Client();
-        $response = $client->request('GET', "{$this->api}{$this->params}", [
-            'headers'  => ['Content-Type' => 'application/x-www-form-urlencoded'],
+        $response = $client->post($this->api, [
+            'form_params' => $this->params,
+            'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
         ]);
 
         $this->handleResponse($response);
@@ -81,8 +78,16 @@ class VictoryLink implements Message
      * @param  array  $data requesr parameters
      * @return string       request parameters for the get request
      */
-    protected function buildRequestParams(array $data): string
+    protected function buildRequestParams(array $data): array
     {
-        return $this->params = "?UserName={$this->credentials['username']}&Password={$this->credentials['password']}&SMSText={$data['message']}&SMSLang={$this->credentials['language']}&SMSSender={$this->credentials['sender']}&SMSReceiver={$data['to']}";
+        return $this->params = [
+            'UserName' => $this->credentials['username'],
+            'Password' => $this->credentials['password'],
+            'SMSText' => $data['message'],
+            'SMSLang' => $this->credentials['language'],
+            'SMSSender' => $this->credentials['sender'],
+            'SMSReceiver' => $data['to'],
+            'SMSID' => (string) Uuid::uuid4(),
+        ];
     }
 }

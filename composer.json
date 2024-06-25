@@ -12,7 +12,8 @@
     "type": "package",
     "require": {
 		"php": ">=7.2",
-        "guzzlehttp/guzzle": "^7.1"
+        "guzzlehttp/guzzle": "^7.1",
+        "ramsey/uuid": "^4.7"
     },
 	"autoload": {
         "psr-4": {

@@ -18,9 +18,7 @@ class Response
 
     public function __construct($response)
     {
-        $this->setCode(
-            $this->parseResponseToArray($response)
-        );
+        $this->setCode($response->getBody()->getContents());
 
         $this->setMessage();
     }
@@ -45,11 +43,11 @@ class Response
 
     /**
      * Set Response Code
-     * @param object $response
+     * @param object $code
      */
-    protected function setCode($response): void
+    protected function setCode($code): void
     {
-        $this->code = $response[0];
+        $this->code = $code;
     }
 
     /**
@@ -83,12 +81,5 @@ class Response
         }
 
         return 'Unknown error code.';
-    }
-
-    protected function parseResponseToArray($response): array
-    {
-        $xmlResponse = new \SimpleXMLElement($response->getBody()->getContents());
-
-        return (array) $xmlResponse;
     }
 }
